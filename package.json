@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "./scripts/refresh_data.sh && next build",
     "start": "next start",
     "refresh": "./scripts/refresh_data.sh"
   },
