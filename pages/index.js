@@ -50,7 +50,6 @@ function No() {
 function Selector({state, cb}) {
   const classData = "inline h-5 w-5 cursor-pointer";
 
-  console.log("Rendering a selector ", state);
   if (state === "asc") {
     return (
       <ChevronDownIcon className={classData} onClick={() => cb('dsc') } />
@@ -124,7 +123,6 @@ export default function Home({games}) {
 
   function bindCallback(prop) {
     return function (val) {
-      console.log("Yo yo", prop, val);
       const newState = {};
       newState[prop] = val;
       setSortState({...sortState, ...newState});
@@ -265,6 +263,7 @@ export async function getStaticProps(context) {
   const rawData = await fs.readFile("./public/waterpolo.json");
 
   const games = JSON.parse(rawData.toString()).map((d) => {
+    console.log("Date", d.Date);
     const parsedDate = DateTime.fromISO(d.Date, {zone: "PST"});
     d.Date = parsedDate.toISO();
     d.PreDate = parsedDate.toFormat("DATE_SHORT");
