@@ -129,7 +129,7 @@ export default function Home({games}) {
     };
   }
   
-  const baseURL = process.env.VERCEL_URL || "";
+  const baseURL = (process.env.VERCEL_ENV === 'production') ? "https://istherewaterpolo.today" : "";
   const twitterCard = baseURL + "/twitter_card.jpg";
   const alert = (gameToday) ? Yes() : No();
 
