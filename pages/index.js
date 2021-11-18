@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import Image from 'next/image'
 import * as _ from 'lodash';
 
-import { CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, SelectorIcon, XCircleIcon } from '@heroicons/react/solid'
+import { ChartBarIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, SelectorIcon, VideoCameraIcon, XCircleIcon } from '@heroicons/react/solid'
 import { useState } from "react";
 
 function Yes() {
@@ -85,6 +85,30 @@ function sortDataGivenState({data, sortState}) {
   return data;
 };
 
+function Video({link}) {
+  if (!link) {
+    return (<></>);
+  }
+
+  return (
+    <a href={link}>
+      <VideoCameraIcon title="Video" className="h-5 w-5" />
+    </a>
+  );
+};
+
+function Stats({link}) {
+  if (!link) {
+    return (<></>);
+  }
+
+  return (
+    <a href={link} title="Stats">
+      <ChartBarIcon className="h-5 w-5" />
+    </a>
+  );
+};
+
 // <!-- Date PST MST CST EST Conference Location Game Dark White D Score W Score Video Stats -->
 export default function Home({games}) {
   const [sortState, setSortState] = useState({
@@ -108,6 +132,7 @@ export default function Home({games}) {
       setSortState({...sortState, ...newState});
     };
   }
+  
 
   const alert = (gameToday) ? Yes() : No();
 
@@ -187,6 +212,12 @@ export default function Home({games}) {
                               >
                                 White
                               </th>
+                              <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                Links
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -202,6 +233,10 @@ export default function Home({games}) {
                                 <td className="px-6  hidden md:table-cell py-4 whitespace-nowrap text-sm text-gray-500">{game.Game}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{game.Dark}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{game.White}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex">
+                                  <Video link={game.Video} />
+                                  <Stats link={game.Stats} />
+                                </td>
                               </tr>
                             ))}
                           </tbody>
