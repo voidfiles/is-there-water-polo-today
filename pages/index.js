@@ -140,10 +140,10 @@ export default function Home({games}) {
           <title>Is there water polo today?</title>
           <meta property="og:title" content="My page title" key="title" />
           <meta name="twitter:card" content="summary" />
-          <meta name="twitter:site" content="@flickr" />
-          <meta name="twitter:title" content="Small Island Developing States Photo Submission" />
-          <meta name="twitter:description" content="View the album on Flickr." />
-          <meta name="twitter:image" content="https://farm6.staticflickr.com/5510/14338202952_93595258ff_z.jpg" />
+          <meta name="twitter:site" content="@waterpolotoday" />
+          <meta name="twitter:title" content="Is there water polo today?" />
+          <meta name="twitter:description" content="" />
+          <meta name="twitter:image" content="/android-chrome-512x512.png" />
         </Head>
         <div className="min-h-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
