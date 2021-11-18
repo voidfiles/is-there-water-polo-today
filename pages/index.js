@@ -137,7 +137,7 @@ export default function Home({games}) {
       <>
         <Head>
           <title>Is there water polo today?</title>
-          <meta property="og:title" content="My page title" key="title" />
+          <meta property="og:title" content="Is there water polo today?" key="title" />
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@waterpolotoday" />
           <meta name="twitter:title" content="Is there water polo today?" />
