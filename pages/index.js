@@ -265,7 +265,9 @@ export async function getStaticProps(context) {
   const games = JSON.parse(rawData.toString()).map((d) => {
     console.log("Date", d.Date);
     const parsedDate = DateTime.fromISO(d.Date, {zone: "PST"});
+    console.log("parsedDate", parsedDate);
     d.Date = parsedDate.toISO();
+    console.log("parsedDate", d.Date);
     d.PreDate = parsedDate.toFormat("DATE_SHORT");
     return d;
   })
