@@ -129,7 +129,8 @@ export default function Home({games}) {
     };
   }
   
-
+  const baseURL = process.env.VERCEL_URL || "";
+  const twitterCard = baseURL + "/twitter_card.jpg";
   const alert = (gameToday) ? Yes() : No();
 
   return (
@@ -140,8 +141,8 @@ export default function Home({games}) {
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@waterpolotoday" />
           <meta name="twitter:title" content="Is there water polo today?" />
-          <meta name="twitter:description" content="" />
-          <meta name="twitter:image" content="/twitter_card.jpg" />
+          <meta name="twitter:description" content="A list of all the waterpolo games happening soon." />
+          <meta name="twitter:image" content={twitterCard} />
         </Head>
         <div className="min-h-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
