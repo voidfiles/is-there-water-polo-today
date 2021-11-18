@@ -3,7 +3,7 @@ import * as fs from "fs/promises";
 import { DateTime } from "luxon";
 import Image from 'next/image'
 import * as _ from 'lodash';
-
+import Head from 'next/head'
 import { ChartBarIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, SelectorIcon, VideoCameraIcon, XCircleIcon } from '@heroicons/react/solid'
 import { useState } from "react";
 
@@ -70,7 +70,6 @@ function Selector({state, cb}) {
 }
 
 function sortDataGivenState({data, sortState}) {
-  console.log("Data b", data[0]);
   _.toPairs(sortState).forEach(([key, val]) => {
     if (_.isUndefined(val)) {
       return;
@@ -81,7 +80,6 @@ function sortDataGivenState({data, sortState}) {
       data = _.reverse(data);
     }
   });
-  console.log("Data c", data[0]);
   return data;
 };
 
@@ -138,6 +136,15 @@ export default function Home({games}) {
 
   return (
       <>
+        <Head>
+          <title>Is there water polo today?</title>
+          <meta property="og:title" content="My page title" key="title" />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content="@flickr" />
+          <meta name="twitter:title" content="Small Island Developing States Photo Submission" />
+          <meta name="twitter:description" content="View the album on Flickr." />
+          <meta name="twitter:image" content="https://farm6.staticflickr.com/5510/14338202952_93595258ff_z.jpg" />
+        </Head>
         <div className="min-h-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
