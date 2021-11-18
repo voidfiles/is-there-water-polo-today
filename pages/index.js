@@ -38,7 +38,7 @@ function No() {
           <div className="ml-3">
             <h3 className="text-5xl font-medium text-red-800">No!</h3>
             <div className="mt-2 text-sm text-red-700">
-              <p>But, there might be upcomming games!</p>
+              <p>But, there might be upcoming games!</p>
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function Home({games}) {
           <div className="py-10">
             <header>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl font-bold leading-tight text-gray-900">Upcomming Games</h1>
+                <h1 className="text-3xl font-bold leading-tight text-gray-900">Upcoming Games</h1>
                 <span>*All times are local too you!</span>
               </div>
             </header>
