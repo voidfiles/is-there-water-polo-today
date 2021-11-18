@@ -141,7 +141,7 @@ export default function Home({games}) {
           <meta name="twitter:site" content="@waterpolotoday" />
           <meta name="twitter:title" content="Is there water polo today?" />
           <meta name="twitter:description" content="" />
-          <meta name="twitter:image" content="/android-chrome-512x512.png" />
+          <meta name="twitter:image" content="/twitter_card.jpg" />
         </Head>
         <div className="min-h-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -263,11 +263,8 @@ export async function getStaticProps(context) {
   const rawData = await fs.readFile("./public/waterpolo.json");
 
   const games = JSON.parse(rawData.toString()).map((d) => {
-    console.log("Date", d.Date);
     const parsedDate = DateTime.fromISO(d.Date, {zone: "UTC-8"});
-    console.log("parsedDate", parsedDate);
     d.Date = parsedDate.toISO();
-    console.log("parsedDate", d.Date);
     d.PreDate = parsedDate.toFormat("DATE_SHORT");
     return d;
   })
