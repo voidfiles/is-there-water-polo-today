@@ -74,7 +74,7 @@ export default function Home({ games }) {
     Date: "asc",
   });
   let gameToday = false;
-  const today = DateTime.now().toFormat("DATE_SHORT");
+  const today = DateTime.now().toISODate();
   games.map((g) => {
     if (g.PreDate == today) {
       gameToday = true;
@@ -217,7 +217,7 @@ export async function getStaticProps(context) {
   const games = JSON.parse(rawData.toString()).map((d) => {
     const parsedDate = DateTime.fromISO(d.Date, { zone: "UTC-8" });
     d.Date = parsedDate.toISO();
-    d.PreDate = parsedDate.toFormat("DATE_SHORT");
+    d.PreDate = parsedDate.toISODate();
     return d;
   });
 
