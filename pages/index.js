@@ -1,74 +1,23 @@
 /* This example requires Tailwind CSS v2.0+ */
 import * as fs from "fs/promises";
 import { DateTime } from "luxon";
-import Image from 'next/image'
-import * as _ from 'lodash';
-import Head from 'next/head'
-import { ChartBarIcon, CheckCircleIcon, ChevronDownIcon, ChevronUpIcon, SelectorIcon, VideoCameraIcon, XCircleIcon } from '@heroicons/react/solid'
+import Image from "next/image";
+import * as _ from "lodash";
+import {
+  ChartBarIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  SelectorIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/solid";
 import { useState } from "react";
+import OurHead from "../components/OurHead";
+import { Yes, No } from "../components/Alerts";
+import OurNav from "../components/OurNav";
+import Selector from "../components/Selector";
+// import Dropdown from "../components/Dropdown";
 
-function Yes() {
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="rounded-md bg-green-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <CheckCircleIcon className="h-20 w-20 text-green-400" aria-hidden="true" />
-          </div>
-          <div className="ml-3">
-            <h3 className="text-5xl font-medium text-green-800">Yes!</h3>
-            <div className="mt-2 text-sm text-green-700">
-              <p>There are games today</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-};
-
-function No() {
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="rounded-md bg-red-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <XCircleIcon className="h-20 w-20 text-red-400" aria-hidden="true" />
-          </div>
-          <div className="ml-3">
-            <h3 className="text-5xl font-medium text-red-800">No!</h3>
-            <div className="mt-2 text-sm text-red-700">
-              <p>But, there might be upcoming games!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-};
-
-function Selector({state, cb}) {
-  const classData = "inline h-5 w-5 cursor-pointer";
-
-  if (state === "asc") {
-    return (
-      <ChevronDownIcon className={classData} onClick={() => cb('dsc') } />
-    );
-  }
-
-  if (state === "dsc") {
-    return (
-      <ChevronUpIcon className={classData} onClick={() => cb(undefined) } />
-    );
-  }
-
-  return (
-    <SelectorIcon className={classData} onClick={() => cb('asc') } />
-  );
-
-}
-
-function sortDataGivenState({data, sortState}) {
+function sortDataGivenState({ data, sortState }) {
   _.toPairs(sortState).forEach(([key, val]) => {
     if (_.isUndefined(val)) {
       return;
@@ -80,203 +29,205 @@ function sortDataGivenState({data, sortState}) {
     }
   });
   return data;
-};
+}
 
-function Video({link}) {
+function Video({ link }) {
   if (!link) {
-    return (<></>);
+    return <></>;
   }
 
   return (
-    <a href={link}>
-      <VideoCameraIcon title="Video" className="h-5 w-5" />
+    <a className="inline" href={link} title="Video">
+      <VideoCameraIcon className="inline h-5 w-5" />
     </a>
   );
-};
+}
 
-function Stats({link}) {
+function Stats({ link }) {
   if (!link) {
-    return (<></>);
+    return <></>;
   }
 
   return (
-    <a href={link} title="Stats">
-      <ChartBarIcon className="h-5 w-5" />
+    <a className="inline" href={link} title="Stats">
+      <ChartBarIcon className="inline h-5 w-5" />
     </a>
   );
-};
+}
+
+function GamesTH({ hideMobile = false, children }) {
+  let classes =
+    "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+  classes += hideMobile ? "hidden md:table-cell" : "";
+  return (
+    <th scope="col" className={classes}>
+      {children}
+    </th>
+  );
+}
+
+function GamesTd({ hideMobile = false, bold = false, children }) {
+  let classes = " px-6 py-4 whitespace-nowrap text-sm ";
+  classes += bold ? " text-gray-900 " : " text-gray-500 ";
+  classes += hideMobile ? " hidden md:table-cell " : "";
+  return <td className={classes}>{children}</td>;
+}
 
 // <!-- Date PST MST CST EST Conference Location Game Dark White D Score W Score Video Stats -->
-export default function Home({games}) {
+export default function Home({ games }) {
   const [sortState, setSortState] = useState({
-    "Date": "asc",
+    Date: "asc",
   });
   let gameToday = false;
   const today = DateTime.now().toFormat("DATE_SHORT");
   games.map((g) => {
-    if(g.PreDate == today) {
+    if (g.PreDate == today) {
       gameToday = true;
     }
   });
 
-  games = sortDataGivenState({sortState, data: games});
+  games = sortDataGivenState({ sortState, data: games });
 
   function bindCallback(prop) {
     return function (val) {
       const newState = {};
       newState[prop] = val;
-      setSortState({...sortState, ...newState});
+      setSortState({ ...sortState, ...newState });
     };
   }
-  
-  const baseURL = (process.env.VERCEL_ENV === 'production') ? "https://istherewaterpolo.today" : "";
-  const twitterCard = baseURL + "/twitter_card.jpg";
-  const alert = (gameToday) ? Yes() : No();
+
+  const alert = gameToday ? Yes() : No();
 
   return (
-      <>
-        <Head>
-          <title>Is there water polo today?</title>
-          <meta property="og:title" content="Is there water polo today?" key="title" />
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:site" content="@waterpolotoday" />
-          <meta name="twitter:title" content="Is there water polo today?" />
-          <meta name="twitter:description" content="A list of all the waterpolo games happening soon." />
-          <meta name="twitter:image" content={twitterCard} />
-        </Head>
-        <div className="min-h-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex">
-                <div className="flex-shrink-0 flex items-center">
-                  <div className="block lg:hidden h-8 w-auto">
-                    <Image  src="/waterpolo.png" alt="Water Polo" width="32" height="32" />
-                  </div>
-                  <div className="hidden lg:block h-8 w-auto">
-                    <Image  src="/waterpolo.png" alt="Water Polo" width="32" height="32" />
-                  </div>
-                  <span>Is there water polo today?</span>
-                </div>
-              </div>
+    <>
+      <OurHead />
+      <div className="min-h-full">
+        <OurNav />
+        <div className="py-10">{alert}</div>
+        <div className="py-10">
+          <header>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl font-bold leading-tight text-gray-900">
+                Upcoming Games
+              </h1>
+              <span>*All times are local too you!</span>
             </div>
-          </div>
-          <div className="py-10">
-            {alert}
-          </div>
-          <div className="py-10">
-            <header>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl font-bold leading-tight text-gray-900">Upcoming Games</h1>
-                <span>*All times are local too you!</span>
-              </div>
-            </header>
-            <main>
-              <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          </header>
+          <main>
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="flex flex-col">
-                  <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-gray-50">
-                            
-                            <tr>
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex"
-                              >
-                                <Selector state={ sortState.Date } cb={ bindCallback('Date') } />
-                                <span>Date</span>
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                <Selector state={ sortState.Conference } cb={ bindCallback('Conference') } />
-                                <span>Conf</span>
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 hidden md:table-cell py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Location
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 hidden md:table-cell py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Game
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Dark
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                White
-                              </th>
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >
-                                Links
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {games.map((game, personIdx) => (
-                              <tr key={game.Date + game.Dark + game.White} className={personIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{DateTime.fromISO(game.Date).toLocal().toFormat('EEE d/L H:mm a')}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  <a href={game.TournamentLink}>
+                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                  <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                      <table className="table-auto min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <GamesTH>
+                              <Selector
+                                state={sortState.Date}
+                                cb={bindCallback("Date")}
+                              />
+                              <span>Date</span>
+                            </GamesTH>
+                            <GamesTH>
+                              <Selector
+                                state={sortState.Conference}
+                                cb={bindCallback("Conference")}
+                              />
+                              <span>Conf</span>
+                            </GamesTH>
+                            <GamesTH>Game</GamesTH>
+                            <GamesTH>Links</GamesTH>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {games.map((game, personIdx) => (
+                            <tr
+                              key={game.Date + game.Dark + game.White}
+                              className={
+                                personIdx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                              }
+                            >
+                              <GamesTd bold={true}>
+                                <div className="text-sm text-gray-900">
+                                  {DateTime.fromISO(game.Date)
+                                    .toLocal()
+                                    .toFormat("hh:mm a")}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {DateTime.fromISO(game.Date)
+                                    .toLocal()
+                                    .toFormat("EEE d/L")}
+                                </div>
+                              </GamesTd>
+                              <GamesTd>
+                                <div className="text-sm text-gray-900">
+                                  <a
+                                    href={game.TournamentLink}
+                                    title={game.Conference + " Conference"}
+                                  >
                                     {game.Conference}
                                   </a>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">{game.Location}</td>
-                                <td className="px-6  hidden md:table-cell py-4 whitespace-nowrap text-sm text-gray-500">{game.Game}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{game.Dark}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{game.White}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex">
-                                  <Video link={game.Video} />
-                                  <Stats link={game.Stats} />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
+                                </div>
+                                <div
+                                  className="text-sm text-gray-500"
+                                  title="Location"
+                                >
+                                  {game.Location}
+                                </div>
+                              </GamesTd>
+                              <GamesTd>
+                                <div className="flex items-center">
+                                  <div className="flex-initial pr-5">
+                                    {game.Game}
+                                  </div>
+                                  <div className="flex-initial">
+                                    <div className="text-sm text-gray-900">
+                                      {game.Dark} vs.
+                                    </div>
+                                    <div className="text-sm text-gray-900">
+                                      {game.White}
+                                    </div>
+                                  </div>
+                                </div>
+                              </GamesTd>
+                              <GamesTd>
+                                <Stats link={game.Stats} />
+                                <Video link={game.Video} />
+                              </GamesTd>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
               </div>
-            </main>
-          </div>
+            </div>
+          </main>
         </div>
-      </>
-    )
+      </div>
+    </>
+  );
 }
 
 export async function getStaticProps(context) {
-  
   const rawData = await fs.readFile("./public/waterpolo.json");
 
   const games = JSON.parse(rawData.toString()).map((d) => {
-    const parsedDate = DateTime.fromISO(d.Date, {zone: "UTC-8"});
+    const parsedDate = DateTime.fromISO(d.Date, { zone: "UTC-8" });
     d.Date = parsedDate.toISO();
     d.PreDate = parsedDate.toFormat("DATE_SHORT");
     return d;
-  })
+  });
 
   if (!games) {
     return {
       notFound: true,
-    }
+    };
   }
 
   return {
     props: { games }, // will be passed to the page component as props
-  }
+  };
 }
