@@ -3,13 +3,7 @@ import * as fs from "fs/promises";
 import { DateTime } from "luxon";
 import Image from "next/image";
 import * as _ from "lodash";
-import {
-  ChartBarIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  SelectorIcon,
-  VideoCameraIcon,
-} from "@heroicons/react/solid";
+import { ChartBarIcon, VideoCameraIcon } from "@heroicons/react/solid";
 import { useState } from "react";
 import OurHead from "../components/OurHead";
 import { Yes, No } from "../components/Alerts";
@@ -108,7 +102,7 @@ export default function Home({ games }) {
           <header>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold leading-tight text-gray-900">
-                Upcoming Games
+                Games
               </h1>
               <span>*All times are local too you!</span>
             </div>
