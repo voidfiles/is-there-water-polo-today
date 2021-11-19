@@ -243,6 +243,8 @@ export async function getStaticProps(context) {
 
   const games = JSON.parse(rawData.toString()).map((d) => {
     const parsedDate = DateTime.fromISO(d.Date, { zone: "UTC-8" });
+    d.DScore = parseInt(d.DScore, 10);
+    d.WScore = parseInt(d.WScore, 10);
     d.Date = parsedDate.toISO();
     d.PreDate = parsedDate.toISODate();
     return d;
