@@ -132,6 +132,7 @@ export default function Home({ games }) {
                               <span>Conf</span>
                             </GamesTH>
                             <GamesTH>Game</GamesTH>
+                            <GamesTH>Scores</GamesTH>
                             <GamesTH>Links</GamesTH>
                           </tr>
                         </thead>
@@ -182,6 +183,32 @@ export default function Home({ games }) {
                                     </div>
                                     <div className="text-sm text-gray-900">
                                       {game.White}
+                                    </div>
+                                  </div>
+                                </div>
+                              </GamesTd>
+                              <GamesTd>
+                                <div className="flex items-center">
+                                  <div className="flex-initial">
+                                    <div
+                                      className={
+                                        "text-sm text-gray-900" +
+                                        (game.DScore > game.WScore
+                                          ? " font-bold "
+                                          : "")
+                                      }
+                                    >
+                                      {game.DScore}
+                                    </div>
+                                    <div
+                                      className={
+                                        "text-sm text-gray-900" +
+                                        (game.WScore > game.DScore
+                                          ? " font-bold "
+                                          : "")
+                                      }
+                                    >
+                                      {game.WScore}
                                     </div>
                                   </div>
                                 </div>
