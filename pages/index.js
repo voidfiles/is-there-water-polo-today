@@ -57,7 +57,7 @@ function Stats({ link }) {
 
 function GamesTH({ hideMobile = false, children }) {
   let classes =
-    "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+    "px-3 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
   classes += hideMobile ? "hidden md:table-cell" : "";
   return (
     <th scope="col" className={classes}>
@@ -67,7 +67,7 @@ function GamesTH({ hideMobile = false, children }) {
 }
 
 function GamesTd({ hideMobile = false, bold = false, children }) {
-  let classes = " px-6 py-4 whitespace-nowrap text-sm ";
+  let classes = " px-3 py-1 md:px-6 md:py-3 whitespace-nowrap text-sm ";
   classes += bold ? " text-gray-900 " : " text-gray-500 ";
   classes += hideMobile ? " hidden md:table-cell " : "";
   return <td className={classes}>{children}</td>;
