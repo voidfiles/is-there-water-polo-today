@@ -9,6 +9,7 @@ import OurHead from "../components/OurHead";
 import { Yes, No } from "../components/Alerts";
 import OurNav from "../components/OurNav";
 import Selector from "../components/Selector";
+import Script from "next/script";
 // import Dropdown from "../components/Dropdown";
 
 function sortDataGivenState({ data, sortState }) {
@@ -201,6 +202,11 @@ export default function Home({ games }) {
           </main>
         </div>
       </div>
+      <Script
+        strategy="afterInteractive"
+        data-cf-beacon='{"token": "dc9183398bf04e229ea9bbd830ed47eb"}'
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+      />
     </>
   );
 }
